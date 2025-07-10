@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Kiểm tra Mã QR</title>
+  <link rel="stylesheet" href="style-2.css">
+</head>
+<body>
+  <button id="toggleDarkMode">🌙 Chế độ tối</button>
+  <button onclick="exportCSV()">📥 Xuất Excel</button>
+
+  <div class="container">
+    <h1>Ứng dụng Kiểm Tra Mã QR</h1>
+
+    <input type="text" id="qrInput" placeholder="Nhập mã QR">
+    <button onclick="clearAll()">🗑️ Xóa tất cả</button>
+
+    <input type="text" id="searchInput" placeholder="🔍 Tìm kiếm mã QR...">
+
+    <p id="message"></p>
+
+    <table id="qrTable">
+      <thead>
+        <tr><th>STT</th><th>Mã QR</th><th>Xóa</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script src="script.js"></script>
+   <footer>
+    <p>© 2025 Bản quyền thuộc Đinh Bảo || dinhbao122002@gmail.com</p>
+  </footer>
+</body>
+</html>
