@@ -1,6 +1,6 @@
 body {
   font-family: Arial, sans-serif;
-  background: #f0f0f0;
+  background: #0e0d0d;
   padding: 20px;
   text-align: center;
 }
@@ -8,19 +8,32 @@ body {
 .container {
   max-width: 600px;
   margin: auto;
-  background: white;
+  background: rgb(31, 149, 153);
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 0 10px #ccc;
+  box-shadow: 0 0 20px #41970f;
 }
 
-input[type="text"] {
+input[id="qrInput"] {
   padding: 10px;
   margin: 10px 5px;
   width: 250px;
   border: 1px solid #aaa;
   border-radius: 5px;
   border-width: 3px;
+  
+
+}
+input[id="searchInput"]{
+ padding: 10px;
+  margin: 10px 5px;
+  width: 250px;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  border-width: 3px;
+  margin-left: -121px;
+
+
 }
 
 button {
@@ -34,6 +47,7 @@ button {
 }
 button:hover {
   background-color: red;
+  box-shadow: 0 0 20px #bcdb0d;
 }
 
 table {
@@ -79,4 +93,9 @@ body.dark th,
 body.dark td {
   border-bottom: 1px solid #444;
 }
-
+footer {
+  margin-top: 30px;
+  text-align: center;
+  color: rgb(248, 246, 246);
+  font-size: 18px;
+}
