@@ -1,4 +1,5 @@
 let qrList = [];
+let html5OrCode= null;
 
 const input = document.getElementById('qrInput');
 const message = document.getElementById('message');
@@ -83,22 +84,45 @@ function clearAll() {
 }
 
 // 📷 QR SCAN
-function startScan() {
-  const html5QrCode = new Html5Qrcode("video");
-  Html5Qrcode.getCameras().then(cameras => {
-    const cameraId = cameras.length > 1 ? cameras[1].id : cameras[0].id;
+async function startScan() {
+  if (html5QrCode) {
+    html5QrCode.clear().catch(()=>{});
+    html5QrCode = null;
+  }
+
+  html5QrCode = new Html5Qrcode("video", { formatsToSupport: [ Html5QrcodeSupportedFormats.QR_CODE ] });
+  try {
+    const devices = await Html5Qrcode.getCameras();
+    if (!devices || !devices.length) {
+      return alert("Không tìm thấy camera");
+    }
+    // Ưu tiên camera sau
+    const back = devices.find(d => d.label.toLowerCase().includes('back'));
+    const camId = back ? back.id : devices[0].id;
+
     html5QrCode.start(
-      cameraId,
+      camId,
       { fps: 10, qrbox: 250 },
-      qrCodeMessage => {
-        input.value = qrCodeMessage;
+      decoded => {
+        input.value = decoded;
         addQR();
-        html5QrCode.stop();
-        document.getElementById("video").style.display = "none";
-      }
+        stopScan();
+      },
+      err => {}
     );
-    document.getElementById("video").style.display = "block";
-  });
+    document.getElementById('video').style.display = 'block';
+  } catch(e) {
+    alert("Lỗi mở camera: " + e);
+  }
+}
+function stopScan() {
+  if (html5QrCode) {
+    html5QrCode.stop()
+      .then(() => {
+        document.getElementById('video').style.display = 'none';
+      })
+      .catch(err => console.error(err));
+  }
 }
 
 // ⬇️ Xuất Excel
