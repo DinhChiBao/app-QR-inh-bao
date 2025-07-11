@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>Kiểm tra Mã QR</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
 </head>
 <body>
   <button id="toggleDarkMode">🌙 Chế độ tối</button>
@@ -26,6 +28,10 @@
       <tbody></tbody>
     </table>
   </div>
+<h3>📷 Quét mã QR</h3>
+<div id="reader" style="width: 300px; margin: auto;"></div>
+<button onclick="startScanner()">Bắt đầu quét</button>
+<button onclick="stopScanner()">Dừng quét</button>
 
   <script src="script.js"></script>
    <footer>
