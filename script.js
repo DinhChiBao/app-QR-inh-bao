@@ -98,32 +98,33 @@ const qrInput = document.getElementById('qrInput');
 
 function startScanner() {
   html5QrCode = new Html5Qrcode("reader");
+  
   Html5Qrcode.getCameras().then(devices => {
     if (devices && devices.length) {
-      const cameraId = devices[0].id;
+      // Ưu tiên chọn camera sau nếu có
+      const backCamera = devices.find(device => device.label.toLowerCase().includes('back'));
+      const cameraId = backCamera ? backCamera.id : devices[0].id;
+
       html5QrCode.start(
         cameraId,
         { fps: 10, qrbox: 250 },
         qrCodeMessage => {
           qrInput.value = qrCodeMessage;
-          addQR();         // Dùng lại hàm addQR bạn đã có
-          stopScanner();   // Dừng sau khi quét xong
+          addQR();
+          stopScanner();
         },
         error => {
-          // console.log(`QR Error: ${error}`);
+          // Xử lý lỗi đọc QR (không cần làm gì nếu không muốn)
         }
       ).catch(err => {
         alert("Không thể mở camera: " + err);
       });
+    } else {
+      alert("Không tìm thấy camera nào");
     }
+  }).catch(err => {
+    alert("Không thể truy cập camera: " + err);
   });
 }
 
-function stopScanner() {
-  if (html5QrCode) {
-    html5QrCode.stop().then(() => {
-      html5QrCode.clear();
-    });
-  }
-}
 
