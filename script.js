@@ -1,5 +1,5 @@
 let qrList = [];
-let html5OrCode= null;
+let html5QrCode = null;
 
 const input = document.getElementById('qrInput');
 const message = document.getElementById('message');
