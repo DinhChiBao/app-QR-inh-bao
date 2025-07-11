@@ -5,7 +5,7 @@ const message = document.getElementById('message');
 const tableBody = document.querySelector('#qrTable tbody');
 const searchInput = document.getElementById('searchInput');
 
-// Nhập bằng Enter
+// Enter to add QR
 input.addEventListener('keydown', e => {
   if (e.key === 'Enter') {
     e.preventDefault();
@@ -13,11 +13,10 @@ input.addEventListener('keydown', e => {
   }
 });
 
-// Tìm kiếm
+// Search
 searchInput.addEventListener('input', function () {
   const keyword = this.value.toLowerCase();
   const rows = tableBody.querySelectorAll('tr');
-
   rows.forEach(row => {
     const qrCode = row.cells[1].textContent.toLowerCase();
     row.style.display = qrCode.includes(keyword) ? '' : 'none';
@@ -25,33 +24,45 @@ searchInput.addEventListener('input', function () {
 });
 
 function addQR() {
-  const value = input.value.trim();
+  const raw = input.value.trim();
 
-  if (!value) {
-    message.textContent = 'Vui lòng nhập mã QR!';
-    return;
-  }
+  // Tách tất cả theo xuống dòng, dấu phẩy hoặc tab
+  const values = raw.split(/[\n\r,]+/);
 
-  const duplicateIndex = qrList.indexOf(value);
-  if (duplicateIndex !== -1) {
-    message.textContent = `❌ Mã đã tồn tại ở dòng ${duplicateIndex + 1}`;
+  let duplicateMessage = '';
+  let added = 0;
+
+  values.forEach((code) => {
+    code = code.trim();
+    if (!code) return;
+
+    const index = qrList.indexOf(code);
+    if (index !== -1) {
+      duplicateMessage += `❌ Trùng dòng ${index + 1}: ${code}\n`;
+    } else {
+      qrList.push(code);
+      added++;
+    }
+  });
+
+  if (duplicateMessage) {
+    message.textContent = duplicateMessage.trim();
   } else {
-    qrList.push(value);
-    message.textContent = '';
-    renderTable();
+    message.textContent = `${added} mã đã được thêm thành công!`;
   }
 
-  input.select();
+  input.value = '';
+  input.focus();
+  renderTable();
 }
+
 
 function renderTable() {
   tableBody.innerHTML = '';
-
   qrList.forEach((code, index) => {
     const row = tableBody.insertRow();
     row.insertCell(0).textContent = index + 1;
     row.insertCell(1).textContent = code;
-
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = '🗑️';
     deleteBtn.onclick = () => deleteQR(index);
@@ -70,61 +81,33 @@ function clearAll() {
     renderTable();
   }
 }
-// Dark Mode toggle
-document.getElementById("toggleDarkMode").addEventListener("click", () => {
-  document.body.classList.toggle("dark");
-});
-function exportCSV() {
-  if (qrList.length === 0) {
-    alert('Danh sách trống!');
-    return;
-  }
 
-  let csvContent = "data:text/csv;charset=utf-8,STT,Mã QR\n";
-  qrList.forEach((code, index) => {
-    csvContent += `${index + 1},${code}\n`;
-  });
-
-  const encodedUri = encodeURI(csvContent);
-  const link = document.createElement("a");
-  link.setAttribute("href", encodedUri);
-  link.setAttribute("download", "danhsach_ma_qr.csv");
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-}
-let html5QrCode;
-const qrInput = document.getElementById('qrInput');
-
-function startScanner() {
-  html5QrCode = new Html5Qrcode("reader");
-  
-  Html5Qrcode.getCameras().then(devices => {
-    if (devices && devices.length) {
-      // Ưu tiên chọn camera sau nếu có
-      const backCamera = devices.find(device => device.label.toLowerCase().includes('back'));
-      const cameraId = backCamera ? backCamera.id : devices[0].id;
-
-      html5QrCode.start(
-        cameraId,
-        { fps: 10, qrbox: 250 },
-        qrCodeMessage => {
-          qrInput.value = qrCodeMessage;
-          addQR();
-          stopScanner();
-        },
-        error => {
-          // Xử lý lỗi đọc QR (không cần làm gì nếu không muốn)
-        }
-      ).catch(err => {
-        alert("Không thể mở camera: " + err);
-      });
-    } else {
-      alert("Không tìm thấy camera nào");
-    }
-  }).catch(err => {
-    alert("Không thể truy cập camera: " + err);
+// 📷 QR SCAN
+function startScan() {
+  const html5QrCode = new Html5Qrcode("video");
+  Html5Qrcode.getCameras().then(cameras => {
+    const cameraId = cameras.length > 1 ? cameras[1].id : cameras[0].id;
+    html5QrCode.start(
+      cameraId,
+      { fps: 10, qrbox: 250 },
+      qrCodeMessage => {
+        input.value = qrCodeMessage;
+        addQR();
+        html5QrCode.stop();
+        document.getElementById("video").style.display = "none";
+      }
+    );
+    document.getElementById("video").style.display = "block";
   });
 }
 
-
+// ⬇️ Xuất Excel
+function exportToExcel() {
+  const ws = XLSX.utils.json_to_sheet(qrList.map((code, index) => ({
+    STT: index + 1,
+    "Mã QR": code
+  })));
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "DanhSachQR");
+  XLSX.writeFile(wb, "ma_qr.xlsx");
+}
