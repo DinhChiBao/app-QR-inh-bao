@@ -93,3 +93,37 @@ function exportCSV() {
   link.click();
   document.body.removeChild(link);
 }
+let html5QrCode;
+const qrInput = document.getElementById('qrInput');
+
+function startScanner() {
+  html5QrCode = new Html5Qrcode("reader");
+  Html5Qrcode.getCameras().then(devices => {
+    if (devices && devices.length) {
+      const cameraId = devices[0].id;
+      html5QrCode.start(
+        cameraId,
+        { fps: 10, qrbox: 250 },
+        qrCodeMessage => {
+          qrInput.value = qrCodeMessage;
+          addQR();         // Dùng lại hàm addQR bạn đã có
+          stopScanner();   // Dừng sau khi quét xong
+        },
+        error => {
+          // console.log(`QR Error: ${error}`);
+        }
+      ).catch(err => {
+        alert("Không thể mở camera: " + err);
+      });
+    }
+  });
+}
+
+function stopScanner() {
+  if (html5QrCode) {
+    html5QrCode.stop().then(() => {
+      html5QrCode.clear();
+    });
+  }
+}
+
