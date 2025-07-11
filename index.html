@@ -13,6 +13,7 @@
     <textarea id="qrInput" placeholder="Nhập hoặc dán nhiều mã QR..." rows="3"></textarea>
 
     <button onclick="startScan()">📷 Quét Camera</button>
+    <button onclick="stopScan()">⛔ Tắt Camera</button>
     <button onclick="clearAll()">🗑️ Xóa tất cả</button>
     <button onclick="exportToExcel()">⬇️ Xuất Excel</button>
   </div>
@@ -31,8 +32,8 @@
     </thead>
     <tbody></tbody>
   </table>
+<video id="video" autoplay muted playsinline style="display:none;"></video>
 
-  <video id="video" autoplay style="display:none;"></video>
 
   <script src="https://unpkg.com/html5-qrcode@2.3.8/minified/html5-qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
