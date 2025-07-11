@@ -2,39 +2,42 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Kiểm tra Mã QR</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>App Quét Mã QR</title>
+  <link rel="stylesheet" href="style-2.css">
 </head>
 <body>
-  <button id="toggleDarkMode">🌙 Chế độ tối</button>
-  <button onclick="exportCSV()">📥 Xuất Excel</button>
+  <h1>📷 Quét & Quản lý Mã QR</h1>
 
-  <div class="container">
-    <h1>Ứng dụng Kiểm Tra Mã QR</h1>
+  <div class="controls">
+    <textarea id="qrInput" placeholder="Nhập hoặc dán nhiều mã QR..." rows="3"></textarea>
 
-    <input type="text" id="qrInput" placeholder="Nhập mã QR">
+    <button onclick="startScan()">📷 Quét Camera</button>
     <button onclick="clearAll()">🗑️ Xóa tất cả</button>
-
-    <input type="text" id="searchInput" placeholder="🔍 Tìm kiếm mã QR...">
-
-    <p id="message"></p>
-
-    <table id="qrTable">
-      <thead>
-        <tr><th>STT</th><th>Mã QR</th><th>Xóa</th></tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <button onclick="exportToExcel()">⬇️ Xuất Excel</button>
   </div>
-<h3>📷 Quét mã QR</h3>
-<div id="reader" style="width: 300px; margin: auto;"></div>
-<button onclick="startScanner()">Bắt đầu quét</button>
-<button onclick="stopScanner()">Dừng quét</button>
 
+  <p id="message" class="message"></p>
+
+  <input type="text" id="searchInput" placeholder="🔍 Tìm mã...">
+
+  <table id="qrTable">
+    <thead>
+      <tr>
+        <th>STT</th>
+        <th>Mã QR</th>
+        <th>Xóa</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <video id="video" autoplay style="display:none;"></video>
+
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/minified/html5-qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="script.js"></script>
-   <footer>
+  <footer>
     <p>© 2025 Bản quyền thuộc Đinh Bảo || dinhbao122002@gmail.com</p>
   </footer>
 </body>
