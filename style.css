@@ -1,8 +1,83 @@
 body {
-  font-family: Arial, sans-serif;
-  padding: 20px;
-  background: black;
-  color: #eee;
+  background-color: black;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.rain-drop {
+  position: fixed;
+  top: -100px;
+  width: 1px;
+  height: 100px;
+  background-image: linear-gradient(to bottom, transparent, white);
+}
+.rain-drop:nth-child(2) {
+  left: 10%;
+  animation: rainFall .8s linear 2s  infinite;
+}
+.rain-drop:nth-child(3) {
+  left: 15%;
+  animation: rainFall .7s linear 1s  infinite;
+}
+.rain-drop:nth-child(4) {
+  left: 35%;
+  animation: rainFall .7s linear .1s  infinite;
+}
+.rain-drop:nth-child(5) {
+  left: 65%;
+  animation: rainFall .7s linear .3s  infinite;
+}
+.rain-drop:nth-child(6) {
+  left: 80%;
+  animation: rainFall .8s linear .9s  infinite;
+}
+.rain-drop:nth-child(7) {
+  left: 90%;
+  animation: rainFall .6s linear 1.1s  infinite;
+}
+.rain-drop:nth-child(8) {
+  left: 82%;
+  animation: rainFall .7s linear .4s  infinite;
+
+}
+.rain-drop:nth-child(9) {
+  left: 95%;
+  animation: rainFall .7s linear 1s  infinite;
+}
+.rain-drop:nth-child(10) {
+  left: 53%;
+  animation: rainFall .8s linear 0.5s  infinite;
+}
+.rain-drop:nth-child(11) {
+  left: 45%;
+  animation: rainFall .8s linear 0.5s  infinite;
+}
+.rain-drop:nth-child(12) {
+  left: 5%;
+  animation: rainFall .8s linear 0.2s  infinite;
+}
+.rain-drop:nth-child(13) {
+  left: 33%;
+  animation: rainFall .8s linear 0.65s  infinite;
+}
+.rain-drop:nth-child(14) {
+  left: 66%;
+  animation: rainFall .7s linear 0.35s  infinite;
+}
+.rain-drop:nth-child(15) {
+  left: 53%;
+  animation: rainFall .8s linear 0.2s  infinite;
+}
+@keyframes rainFall {
+  0% {
+    top: -100px;
+  }
+  50% {
+    top: 100vh;
+  }
+  100% {
+    top: 100vh;
+  }
 }
 
 h1 {
